@@ -10,7 +10,7 @@ import "ag-grid-community/styles/ag-theme-alpine.css";
 function App() {
   const columnApiRef = useRef(null);
 
-  // ✅ 컬럼 정의: 도시 + 1월~12월 + 합계
+  // ✅ 컬럼 정의
   const columnDefs = useMemo(() => {
     const months = Array.from({ length: 12 }, (_, i) => ({
       headerName: `${i + 1}월`,
@@ -42,9 +42,12 @@ function App() {
     filter: true,
     resizable: true,
     movable: true,
+    enablePivot: true,    // ✅ Pivot 허용
+    enableRowGroup: true, // ✅ 그룹핑 허용
+    enableValue: true,    // ✅ 값 집계 허용
   };
 
-  // ✅ 50개 도시 + 임의 강우량 데이터 생성
+  // ✅ 50개 도시 데이터 생성
   const rowData = useMemo(() => {
     const cities = [
       "서울", "뉴욕", "런던", "파리", "도쿄", "베를린", "시드니", "케이프타운", "리우데자네이루", "모스크바",
@@ -63,7 +66,7 @@ function App() {
     });
   }, []);
 
-  // ✅ 하단 합계 row 데이터
+  // ✅ 하단 합계 row
   const pinnedBottomRowData = useMemo(() => {
     const totals = {};
     for (let i = 1; i <= 12; i++) {
@@ -97,7 +100,7 @@ function App() {
 
   return (
     <div style={{ width: "100%", height: "100vh" }}>
-      <h1 style={{ textAlign: "center" }}>🌧️ 도시별 월별 강우량 데이터 (AG Grid v34)</h1>
+      <h1 style={{ textAlign: "center" }}>🌧️ 도시별 월별 강우량 데이터 (AG Grid v34 - Pivot 지원)</h1>
       <div
         className="ag-theme-alpine"
         style={{ height: 600, width: "90%", margin: "0 auto" }}
@@ -110,6 +113,7 @@ function App() {
           onGridReady={onGridReady}
           onColumnMoved={onColumnMoved}
           pinnedBottomRowData={pinnedBottomRowData}
+          sideBar={true}   // ✅ 피벗/필터/컬럼 제어 패널 활성화
         />
       </div>
     </div>
